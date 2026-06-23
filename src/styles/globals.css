@@ -1,0 +1,14 @@
+/* Reset & base typography */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+img, video {
+  max-width: 100%;
+  display: block;
+}
+
+/* Smooth anchor scroll offset */
+[id] {
+  scroll-margin-top: 80px;
+}
