@@ -1,6 +1,13 @@
 import type { ReactNode } from "react";
 
-type ButtonVariant = "primary" | "secondary" | "ghost";
+type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "ghost"
+  | "white"
+  | "whiteOutline"
+  | "whiteGhost";
+
 type ButtonSize = "sm" | "md" | "lg";
 
 interface ButtonProps {
@@ -17,6 +24,7 @@ interface ButtonProps {
 }
 
 const VARIANT: Record<ButtonVariant, string> = {
+  // Standard (light bg)
   primary:
     "bg-nido-oro text-nido-bianco border border-nido-oro " +
     "hover:bg-nido-marrone hover:border-nido-marrone",
@@ -26,11 +34,21 @@ const VARIANT: Record<ButtonVariant, string> = {
   ghost:
     "bg-transparent text-nido-marrone border border-transparent " +
     "hover:text-nido-oro",
+  // Dark bg contexts (Hero, FishDay)
+  white:
+    "bg-white text-nido-marrone border border-white " +
+    "hover:bg-nido-bianco",
+  whiteOutline:
+    "bg-transparent text-white border border-white/60 " +
+    "hover:bg-white hover:text-nido-marrone",
+  whiteGhost:
+    "bg-transparent text-white/70 border border-transparent " +
+    "hover:text-white",
 };
 
 const SIZE: Record<ButtonSize, string> = {
-  sm: "px-5 py-2 text-xs tracking-[0.15em]",
-  md: "px-7 py-3 text-xs tracking-[0.15em]",
+  sm: "px-5 py-2 text-[10px] tracking-[0.15em]",
+  md: "px-7 py-3 text-[10px] tracking-[0.15em]",
   lg: "px-9 py-4 text-xs tracking-[0.15em]",
 };
 

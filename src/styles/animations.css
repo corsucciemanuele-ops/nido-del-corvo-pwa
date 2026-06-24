@@ -1,21 +1,46 @@
-/* Reveal animation — triggered by useScrollAnimation */
-.animate-in {
-  animation: fadeInUp 0.6s ease-out forwards;
+/* ==========================================================
+   Scroll reveal — gestito via useReveal hook (JS-driven)
+   opacity/transform applicati inline dal hook, no stato CSS
+   iniziale qui (progressive enhancement)
+   ========================================================== */
+
+/* ==========================================================
+   3D Card hover — Accedi section
+   @media (hover: hover) → solo dispositivi con mouse
+   ========================================================== */
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+  will-change: transform;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+@media (hover: hover) and (pointer: fine) {
+  .card-3d:hover {
+    transform: perspective(900px) rotateX(4deg) rotateY(-6deg) translateZ(10px);
+    box-shadow: -6px 24px 40px rgba(23, 21, 18, 0.13);
   }
 }
 
-/* Initial hidden state for scroll-animated elements */
-[data-animate] {
-  opacity: 0;
-  transform: translateY(24px);
+/* ==========================================================
+   Scroll indicator bounce — Hero
+   ========================================================== */
+@keyframes bounce-soft {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(7px); }
+}
+
+.animate-bounce-soft {
+  animation: bounce-soft 2.2s ease-in-out infinite;
+}
+
+/* ==========================================================
+   Fade-in — usato per video overlay opacity
+   ========================================================== */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fade-in 1.2s ease-out forwards;
 }
