@@ -1,29 +1,54 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --color-avorio: #F4EFE6;
-    --color-sabbia: #D8C3A5;
-    --color-oro-tenue: #BFA76A;
-    --color-marrone-caldo: #5A4634;
-    --color-verde-oliva: #6F7A55;
-    --color-nero-morbido: #171512;
-    --color-bianco-caldo: #FFFDF8;
-  }
+@theme {
+  /* Palette Nido del Corvo */
+  --color-nido-avorio: #F4EFE6;
+  --color-nido-sabbia: #D8C3A5;
+  --color-nido-oro: #BFA76A;
+  --color-nido-marrone: #5A4634;
+  --color-nido-oliva: #6F7A55;
+  --color-nido-nero: #171512;
+  --color-nido-bianco: #FFFDF8;
 
+  /* Fonts */
+  --font-heading: 'Cormorant Garant', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+@layer base {
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-family: var(--font-body);
   }
 
   body {
     margin: 0;
-    background-color: var(--color-bianco-caldo);
-    color: var(--color-nero-morbido);
+    background-color: #FFFDF8;
+    color: #171512;
+    font-family: var(--font-body);
+  }
+
+  /* Anchor link offset for fixed header */
+  [id] {
+    scroll-margin-top: 80px;
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    display: block;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
   }
 }
 
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;
