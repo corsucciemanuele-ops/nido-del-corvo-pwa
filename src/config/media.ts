@@ -19,3 +19,18 @@ export const MEDIA_PATHS = {
     placeholder: "/assets/placeholder/gallery-evento.jpg",
   },
 } as const;
+
+export interface GalleryItem {
+  src: string;
+  alt: string;
+  category: "esperienza" | "cucina";
+}
+
+export const GALLERY_ITEMS: GalleryItem[] = [
+  { src: MEDIA_PATHS.gallery.esperienza[0], alt: "Vista panoramica dal Nido del Corvo", category: "esperienza" },
+  { src: MEDIA_PATHS.gallery.esperienza[1], alt: "Vista sul Lago di Mercatale", category: "esperienza" },
+  { src: MEDIA_PATHS.gallery.esperienza[2], alt: "La terrazza del Nido al tramonto", category: "esperienza" },
+  { src: MEDIA_PATHS.gallery.cucina[0], alt: "Crudo di pesce fresco", category: "cucina" },
+  { src: MEDIA_PATHS.gallery.cucina[1], alt: "Carne alla brace", category: "cucina" },
+  { src: MEDIA_PATHS.gallery.cucina[2], alt: "Pizza a lievitazione naturale", category: "cucina" },
+];
