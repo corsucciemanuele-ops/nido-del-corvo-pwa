@@ -1,3 +1,4 @@
+import { SEO } from "@/components/seo/SEO";
 import { Hero } from "@/components/sections/Hero";
 import { Esperienza } from "@/components/sections/Esperienza";
 import { Cucina } from "@/components/sections/Cucina";
@@ -10,6 +11,7 @@ import { Contatti } from "@/components/sections/Contatti";
 export const Home = () => {
   return (
     <>
+      <SEO />
       <Hero />
       <Esperienza />
       <Cucina />
