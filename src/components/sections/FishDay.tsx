@@ -57,7 +57,7 @@ export const FishDay = () => {
           >
             <div className="max-w-md">
               <div data-reveal className="flex items-center gap-3 mb-7">
-                <Badge variant="gold">Ogni Giovedì & Venerdì</Badge>
+                <Badge variant="gold">Ogni giovedì</Badge>
               </div>
 
               <h2
