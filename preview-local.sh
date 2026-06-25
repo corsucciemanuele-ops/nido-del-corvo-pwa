@@ -3,28 +3,25 @@
 set -e
 
 echo ""
-echo "  Nido del Corvo — Preview locale"
-echo "  ────────────────────────────────"
+echo "  Nido del Corvo — Dev server locale"
+echo "  ────────────────────────────────────"
 
 # installa dipendenze se node_modules manca
 if [ ! -d "node_modules" ]; then
   echo "  → Installazione dipendenze..."
-  npm install --silent
+  npm install
 fi
 
-# build production
-echo "  → Build production..."
-npm run build --silent
-
-# avvia preview e apri browser
 echo ""
-echo "  ✓ Preview disponibile su: http://localhost:4173"
+echo "  ✓ Dev server su: http://localhost:5173"
+echo "  In caso di pagina bianca, apri la Console del browser (F12)"
+echo "  per vedere l'errore esatto."
 echo "  Premi Ctrl+C per fermare."
 echo ""
 
-# apri il browser dopo 1 secondo (solo macOS)
+# apri il browser dopo 2 secondi (solo macOS)
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  (sleep 1 && open "http://localhost:4173") &
+  (sleep 2 && open "http://localhost:5173") &
 fi
 
-npm run preview -- --host 0.0.0.0 --port 4173
+npx vite --host 0.0.0.0 --port 5173
