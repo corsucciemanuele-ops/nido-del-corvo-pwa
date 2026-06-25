@@ -1,5 +1,5 @@
 import { Component, type ReactNode } from "react";
-import { HelmetProvider } from "react-helmet-async";
+// import { HelmetProvider } from "react-helmet-async"; // debug
 import { AuthProvider } from "@/auth/context/AuthContext";
 import { Layout } from "@/components/layout/Layout";
 import { Home } from "@/pages/Home";
@@ -31,13 +31,12 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | 
 function App() {
   return (
     <ErrorBoundary>
-      <HelmetProvider>
-        <AuthProvider>
-          <Layout>
-            <Home />
-          </Layout>
-        </AuthProvider>
-      </HelmetProvider>
+      {/* HelmetProvider temporaneamente rimosso per debug pagina bianca */}
+      <AuthProvider>
+        <Layout>
+          <Home />
+        </Layout>
+      </AuthProvider>
     </ErrorBoundary>
   );
 }
