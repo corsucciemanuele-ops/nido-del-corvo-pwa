@@ -683,6 +683,7 @@ window.addEventListener('load', ()=>playPrologue(introReveal));
 setTimeout(()=>playPrologue(introReveal), 3500);
 
 /* hero: respiro lentissimo del media */
+gsap.set('.hero .h-media > *', {willChange:'transform'});
 gsap.to('.hero .h-media > *', {scale:1.06, duration:14, ease:'sine.inOut', yoyo:true, repeat:-1});
 
 /* hero scroll-driven — attivo anche su mobile, più pronunciato */
@@ -717,26 +718,24 @@ gsap.fromTo('.accedi .ac-card', {y:54, autoAlpha:0},
   {y:0, autoAlpha:1, duration:1, stagger:.12, ease:'expo.out',
    scrollTrigger:{trigger:'.accedi .ac-grid', start:'top 85%'}});
 
-/* respiro d'aria hero→manifesto: si allarga dal centro (Nido = si apre) */
-if(!reduceMotion){
-  gsap.to('.airband .air-fill', {width:'120%', ease:'none',
-    scrollTrigger:{trigger:'.airband', start:'top bottom', end:'top 55%', scrub:true}});
-  gsap.to('.airband .air-fill', {width:'0%', ease:'none',
-    scrollTrigger:{trigger:'.airband', start:'top 55%', end:'top top', scrub:true}});
-}
+/* respiro d'aria hero→manifesto: si allarga dal centro (Nido = si apre)
+   Scroll-driven puro (non autonomo) → attivo anche con "Riduci movimento" */
+gsap.to('.airband .air-fill', {width:'120%', ease:'none',
+  scrollTrigger:{trigger:'.airband', start:'top bottom', end:'top 55%', scrub:true}});
+gsap.to('.airband .air-fill', {width:'0%', ease:'none',
+  scrollTrigger:{trigger:'.airband', start:'top 55%', end:'top top', scrub:true}});
 
-/* viaggio cromatico: il fondo vira verso il caldo del tramonto entrando nel Fish Day */
-if(!reduceMotion){
-  gsap.to('body', {backgroundColor:'#F6EEDD', ease:'none',
-    scrollTrigger:{trigger:'#fishday', start:'top 85%', end:'top 30%', scrub:true}});
-  gsap.to('body', {backgroundColor:'#FFFDF8', ease:'none',
-    scrollTrigger:{trigger:'#accedi', start:'top 80%', end:'top 40%', scrub:true}});
-}
+/* viaggio cromatico: il fondo vira verso il caldo del tramonto entrando nel Fish Day
+   Cambio di colore (non movimento) → attivo anche con "Riduci movimento" */
+gsap.to('body', {backgroundColor:'#F6EEDD', ease:'none',
+  scrollTrigger:{trigger:'#fishday', start:'top 85%', end:'top 30%', scrub:true}});
+gsap.to('body', {backgroundColor:'#FFFDF8', ease:'none',
+  scrollTrigger:{trigger:'#accedi', start:'top 80%', end:'top 40%', scrub:true}});
 
-/* horizon lines: si disegnano dal centro */
-if(reduceMotion){ gsap.set('.horizon',{scaleX:1}); }
-else document.querySelectorAll('.horizon').forEach(line => {
-  gsap.to(line, {scaleX:1, duration:2, ease:'expo.out',
+/* horizon lines: si disegnano dal centro — attive anche con "Riduci movimento",
+   più veloci su mobile (1s vs 2s) perché l'effetto è visivo non vestibolare */
+document.querySelectorAll('.horizon').forEach(line => {
+  gsap.to(line, {scaleX:1, duration: reduceMotion ? 1 : 2, ease:'expo.out',
     scrollTrigger:{trigger:line, start:'top 88%'}});
 });
 
@@ -764,13 +763,17 @@ const galRows = [...document.querySelectorAll('.gal3 .g3-row')];
    Le 5 foto sono raddoppiate nel markup: quando la riga ha scorso un
    set completo, riportiamo l'offset a 0 → loop senza salti.
    Funziona anche con "Riduci movimento" attivo: è il cuore della sezione. */
+/* Su iPhone Pro (120 Hz) il rAF gira a ~120fps: stessa velocità in px/ms
+   indipendentemente dal refresh rate. 0.45 px/frame a 60fps ≈ 27px/s. */
+let lastTs = 0;
+const GAL_PX_PER_MS = 0.027; // ~27px/s, coerente a ogni refresh rate
 const galState = galRows.map(row => ({
   el: row,
   dir: +row.dataset.dir,        // 1 = scorre verso sinistra, -1 = verso destra
   half: 0,                      // calcolata sotto (robusta)
   pos: 0,
   speed: 0,
-  target: 0.45,                 // velocità desiderata (px/frame)
+  target: 0.45,                 // velocità desiderata (px/frame a 60fps)
   ready: false
 }));
 
@@ -788,10 +791,15 @@ function measureRows(){
   });
 }
 
-function galStep(){
+function galStep(ts){
+  const dt = lastTs ? Math.min(ts - lastTs, 50) : 16.67; // cap a 50ms per tab inattivo
+  lastTs = ts;
+  const targetPx = GAL_PX_PER_MS * dt; // px da percorrere in questo frame
   galState.forEach(st=>{
     if(!st.ready || st.half <= 0) return;
-    st.speed += (st.target - st.speed) * 0.08; // rallentamento/ripartenza morbidi
+    // target espresso in px/frame-60fps; convertiamo al delta reale
+    const tgt = (st.target / 0.45) * targetPx;
+    st.speed += (tgt - st.speed) * 0.08; // rallentamento/ripartenza morbidi
     st.pos -= st.speed * st.dir;
     if(st.pos <= -st.half) st.pos += st.half;
     if(st.pos > 0) st.pos -= st.half;
