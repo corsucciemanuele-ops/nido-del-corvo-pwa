@@ -96,7 +96,16 @@ footer .horizon{margin:6vh 0 0;transform-origin:left}
 #prologue .lift{position:absolute;left:0;right:0;top:0;height:0;background:linear-gradient(180deg,#0E0C0A,#171512)}
 
 /* ── PRELOADER ── */
-#loader{position:fixed;inset:0;z-index:9000;background:var(--nero);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.1rem;color:var(--su-scuro)}
+/* Fallback CSS puro: se JS non gira (file:// locale su iOS), loader/prologue
+   svaniscono e il testo clippato torna visibile — tutto via CSS, zero JS. */
+@keyframes _hide{to{opacity:0;visibility:hidden;pointer-events:none}}
+@keyframes _show{to{transform:translateY(0);opacity:1}}
+#prologue{animation:_hide .4s 3.5s ease forwards}
+/* testo hero e reveal-lines: si libera dal clip dopo 5s */
+.hero .h-eyebrow span,.hero h1 .h-line span,.reveal-lines .rl>span{
+  animation:_show .7s 5s ease forwards}
+#loader{animation:_hide .6s 4.5s ease forwards;
+  position:fixed;inset:0;z-index:9000;background:var(--nero);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.1rem;color:var(--su-scuro)}
 #loader .l-logo{font-family:var(--font-display);font-size:clamp(1.8rem,4.4vw,2.9rem);letter-spacing:.04em;overflow:hidden}
 #loader .l-logo span{display:inline-block;transform:translateY(110%)}
 #loader .l-sub{font-size:.68rem;letter-spacing:.34em;font-weight:500;text-transform:uppercase;opacity:0}
